@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Information - PartyKing's KingTix</title>
+    <link rel="stylesheet" href="../html/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .sales-info {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+        .sales-info p {
+            margin: 10px 0;
+        }
+        .total-cost {
+            font-weight: bold;
+        }
+        button {
+            background-color: #3f0909;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #8b3030;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // Retrieve sales data from localStorage
+            let salesData = JSON.parse(localStorage.getItem('salesData')) || {};
+
+            // Display sales data
+            let salesInfoContainer = document.getElementById('sales-info');
+            if (Object.keys(salesData).length === 0) {
+                salesInfoContainer.innerHTML = "<p>No sales data available.</p>";
+            } else {
+                for (let item in salesData) {
+                    let itemData = salesData[item];
+                    let itemElement = document.createElement('p');
+                    itemElement.textContent = `${item} = ${itemData.quantity} ($${itemData.total})`;
+                    salesInfoContainer.appendChild(itemElement);
+                }
+            }
+        };
+
+        // Function to clear the sales data after confirmation
+        function clearSalesData() {
+            let confirmClear = confirm("Are you sure you want to clear all sales data?");
+            if (confirmClear) {
+                // Clear the sales data from localStorage
+                localStorage.removeItem('salesData');
+                // Reload the page to reflect the changes
+                window.location.reload();
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <img src="../images/PartyKing Logo.jpg" width="12%" height="12%" alt="Logo">
+        <nav>
+            <a href="../html/admindash.html">Home</a>
+            <a href="../html/login.html">Logout</a>
+        </nav>
+    </header>
+    <h1>Sales Information</h1>
+    <div id="sales-info" class="sales-info"></div>
+    <!-- Button to clear the sales data -->
+    <button onclick="clearSalesData()">Clear Sales Data</button>
+</body>
+</html>

@@ -1,0 +1,59 @@
+header {
+    background-image:url("../images/Banners.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 50px;
+    text-align: center;
+    color: #ffffff;
+    border-bottom-left-radius: 50% 30%;
+    border-bottom-right-radius: 50% 30%;
+}
+
+header img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+    max-width: 100%;
+    height: auto;
+}
+
+nav {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav a {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #570f0f;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight:bold;
+    font-size: 18px;
+    transition: all 0.2s ease-in-out;
+
+}
+
+nav a:hover {
+    background-color: #570f0f;
+    color: #fff;
+}
+
+body {
+  background-color: #eec5c5;
+  text-align: center;
+  align-items: center;
+  font-family: monospace;
+}
+
+footer {
+  background-color: #e9e8a4;
+  padding: 5px;
+  font-family: monospace;
+  font-size: 70%;
+  text-align: center;
+  color: #ffffff;
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Orders - PartyKing's KingTix</title>
+    <link rel="stylesheet" type="text/css" href="../html/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        canvas {
+            margin: 20px auto;
+            display: block;
+        }
+        p {
+            font-size: 150%;
+        }
+        h1 {
+            font-size: 350%;
+            color: #570f0f;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #570f0f;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .qr-container {
+            margin: 30px 0;
+        }
+        #clear-orders-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #570f0f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #clear-orders-btn:hover {
+            background-color: #8b1a1a;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            // Retrieve all order data from localStorage
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+            if (orders.length === 0) {
+                document.getElementById('order-container').textContent = "No orders found!";
+            } else {
+                // Generate a QR code for each order
+                orders.forEach((order, index) => {
+                    let qrContainer = document.createElement('div');
+                    qrContainer.className = 'qr-container';
+
+                    // Add a canvas for the QR code
+                    let canvas = document.createElement('canvas');
+                    canvas.id = 'qrcode-' + index;
+
+                    // Add the order details
+                    let orderDetails = document.createElement('p');
+                    orderDetails.textContent = `Order #${index + 1}: ${order}`;
+
+                    // Append elements to the container
+                    qrContainer.appendChild(orderDetails);
+                    qrContainer.appendChild(canvas);
+                    document.getElementById('order-container').appendChild(qrContainer);
+
+                    // Generate the QR code
+                    QRCode.toCanvas(canvas, order, function (error) {
+                        if (error) console.error(error);
+                        console.log('QR Code generated for order:', order);
+                    });
+                });
+            }
+
+            // Clear orders function with confirmation
+            document.getElementById('clear-orders-btn').addEventListener('click', function() {
+                if (confirm("Are you sure you want to clear all orders? This action cannot be undone.")) {
+                    // Clear orders from localStorage
+                    localStorage.removeItem('orders');
+                    // Refresh the page to reflect the change
+                    window.location.reload();
+                }
+            });
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <img src="../images/PartyKing Logo.jpg" width="12%" height="12%" alt="Logo">
+        <nav>
+            <a href="../html/Index.html">Home</a>
+            <a href="../html/Services.html">Our Services</a>
+            <a href="../html/Cart.html">Cart</a>
+            <a href="../html/MyOrders.html">My Orders</a>
+            <a href="../html/login.html">Logout</a>
+        </nav>
+    </header>
+    <h1>My Orders</h1>
+    <div id="order-container"></div>
+    <button id="clear-orders-btn">Clear Orders</button>
+</body>
+</html>

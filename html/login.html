@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Set background image and ensure it covers the whole page */
+        body {
+            font-family: Arial, sans-serif;
+            background: url('../images/Banners.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            flex-direction: column; /* Ensure logo is above the login container */
+        }
+
+        /* Center the login container */
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 2em;
+            color: #570f0f;
+        }
+
+        input {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #570f0f;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #8b3030;
+        }
+
+        #password-container {
+            display: block;
+        }
+
+        /* Logo styling */
+        .logo {
+            margin-bottom: 20px;
+            width: 150px; /* Adjust the logo size as needed */
+            height: auto;
+        }
+
+        /* Make button responsive */
+        @media (max-width: 500px) {
+            .login-container {
+                width: 80%;
+            }
+        }
+    </style>
+    <script>
+        function handleUsernameInput() {
+            const username = document.getElementById('username').value;
+            const passwordContainer = document.getElementById('password-container');
+
+            // Always show password field (now required for both regular users and admins)
+            passwordContainer.style.display = "block";
+        }
+
+        function validateLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Admin login with '620_' prefix
+            if (username.startsWith("620_")) {
+                const adminPassword = "12345"; // Example admin password
+                if (password === adminPassword) {
+                    alert("Welcome, Admin!");
+                    window.location.href = "admindash.html"; // Redirect to admin dashboard
+                } else {
+                    alert("Incorrect password for admin.");
+                }
+            } 
+            // Regular user login
+            else if (username.trim() !== "" && password.trim() !== "") {
+                alert("Welcome, User!");
+                window.location.href = "index.html"; // Redirect to user homepage
+            } else {
+                alert("Please enter a valid username and password.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- PartyKing Logo -->
+    <img src="../images/PartyKing Logo.JPG" width="12%" height="12%" alt="PartyKing Logo" class="logo">
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <h2>Login</h2>
+        <input 
+            type="text" 
+            id="username" 
+            placeholder="Enter your username" 
+            oninput="handleUsernameInput()"
+        >
+        <div id="password-container">
+            <input type="password" id="password" placeholder="Enter your password">
+        </div>
+        <button onclick="validateLogin()">Login</button>
+    </div>
+</body>
+</html>

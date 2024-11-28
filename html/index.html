@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PartyKing's KingTix</title>
+    <link rel="stylesheet" type="text/css" href="../html/style.css">
+    <style>
+        .food-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .food {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .food img {
+            display: block;
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 2px solid rgb(255, 255, 255);
+            max-width: 100%;
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .food img:hover {
+            transform: scale(1.2);
+        }
+        .food-items {
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 350%;
+            color: #570f0f;
+        }
+        p {
+            font-size: 150%;
+        }
+    </style>
+    <script>
+        function addToCart(item) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(item);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(item + " added to cart!");
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <img src="../images/PartyKing Logo.jpg" width="12%" height="12%" alt="Logo">
+        <nav>
+            <a href="../html/Index.html">Home</a>
+            <a href="../html/Services.html">Our Services</a>
+            <a href="../html/Cart.html">Cart</a>
+            <a href="../html/MyOrders.html">My Orders</a>
+            <a href="../html/login.html">Logout</a>
+        </nav>
+    </header>
+    <br>
+    <div class="food-container">
+        <div class="food">
+            <div class="food-items">
+                <img src="../images/Snow Ice.jpg" alt="snow cone" onclick="addToCart('Snow Ice')">
+                <p>Snow Ice - $250</p>
+            </div>
+            <div class="food-items">
+                <img src="../images/Hot Dogs.jpg" alt="hot dog" onclick="addToCart('Hot Dogs')">
+                <p>Hot Dogs - $240</p>
+            </div>
+            <div class="food-items">
+                <img src="../images/Popcorn.jpg" alt="popcorn" onclick="addToCart('Popcorn')">
+                <p>Popcorn - $200</p>
+            </div>
+            <div class="food-items">
+                <img src="../images/Chicken Wings.jpeg" alt="wings" onclick="addToCart('5 Chicken Wings')">
+                <p>5 Chicken Wings - $850</p>
+            </div>
+            <div class="food-items">
+                <img src="../images/Cotton Candy.jpg" alt="cotton candy" onclick="addToCart('Cotton Candy')">
+                <p>Cotton Candy - $150</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

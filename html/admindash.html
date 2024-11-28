@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - PartyKing's KingTix</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #eec5c5;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #c22424;
+            color: white;
+            padding: 10px 0;
+        }
+        nav {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        nav a {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #570f0f;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight:bold;
+            font-size: 18px;
+            transition: all 0.2s ease-in-out;
+        }
+
+nav a:hover {
+    background-color: #570f0f;
+    color: #fff;
+        }
+        .admin-container {
+            margin: 50px auto;
+            padding: 20px;
+            max-width: 800px;
+            background: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #000000;
+        }
+        .admin-actions {
+            margin: 20px 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="PartyKing Logo.jpg" width="12%" height="12%" alt="Logo">
+        <nav>
+            <a href="admindash.html">Home</a>
+            <a href="login.html">Logout</a>
+        </nav>
+    </header>
+    <div class="admin-container">
+        <h2>Welcome, Admin!</h2>
+        <div class="admin-actions">
+            <nav>
+                <a href="SalesInfo.html">Sales Information</a>
+                <a href="Cancel.html">Cancel Orders</a>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>

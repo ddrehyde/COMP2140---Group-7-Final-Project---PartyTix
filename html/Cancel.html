@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Orders - PartyKing's KingTix</title>
+    <link rel="stylesheet" href="./html/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .order-container {
+            margin: 20px 0;
+        }
+        .order-item {
+            font-size: 1.5em;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+        .order-details {
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+        .delete-button {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .delete-button:hover {
+            background-color: darkred;
+        }
+        canvas {
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // Retrieve orders from localStorage
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            let orderContainer = document.getElementById('order-container');
+
+            if (orders.length === 0) {
+                orderContainer.innerHTML = "<p>No orders found!</p>";
+            } else {
+                orders.forEach((order, index) => {
+                    // Split the order string into individual items
+                    let orderItems = order.split(', ');
+                    
+                    let orderDiv = document.createElement('div');
+                    orderDiv.className = 'order-item';
+                    orderDiv.innerHTML = `Order #${index + 1}`;
+                    
+                    let orderDetailsDiv = document.createElement('div');
+                    orderDetailsDiv.className = 'order-details';
+                    orderDetailsDiv.innerHTML = `Details: ${orderItems.join(', ')}`;
+
+                    // Create the QR code for each order
+                    let canvas = document.createElement('canvas');
+                    canvas.id = 'qrcode-' + index;
+                    orderDiv.appendChild(orderDetailsDiv);
+                    orderDiv.appendChild(canvas);
+
+                    // Generate QR code for the order details
+                    QRCode.toCanvas(canvas, order, function (error) {
+                        if (error) console.error(error);
+                        console.log('QR Code generated for order:', order);
+                    });
+
+                    // Add delete functionality
+                    orderDiv.onclick = function() {
+                        if (confirm(`Are you sure you want to cancel Order #${index + 1}?`)) {
+                            deleteOrder(index);
+                        }
+                    };
+
+                    orderContainer.appendChild(orderDiv);
+                });
+            }
+        };
+
+        function deleteOrder(index) {
+            // Retrieve the orders from localStorage
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            // Remove the selected order
+            orders.splice(index, 1);
+            
+            // Save the updated orders back to localStorage
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // Reload the page to update the displayed orders
+            window.location.reload();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <img src="/images/PartyKing Logo.jpg" width="12%" height="12%" alt="Logo">
+        <nav>
+            <a href="../html/admindash.html">Home</a>
+            <a href="../html/login.html">Logout</a>
+        </nav>
+    </header>
+    <h1>Cancel Orders</h1>
+    <div id="order-container" class="order-container"></div>
+</body>
+</html>
