@@ -2,8 +2,9 @@
 <html>
 <head>
     <title>Checkout - PartyKing's KingTix</title>
-    <link rel="stylesheet" type="text/css" href="../hmtl/style.css">
+    <link rel="stylesheet" type="text/css" href="../html/style.css">
     <style>
+        /* Styles (unchanged) */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -20,7 +21,7 @@
             margin-top: 20px;
             font-weight: bold;
         }
-        input, button {
+        input, button, select {
             margin: 10px;
             padding: 10px;
             font-size: 1em;
@@ -56,6 +57,9 @@
             "Popcorn": 200
         };
 
+        let seatDeliveryAdded = false;
+        let selectedSeat = ""; // Store the selected seat
+
         function loadCheckout() {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
             let checkoutContainer = document.getElementById('checkout-items');
@@ -74,50 +78,67 @@
                     total += prices[item] || 0; // Correct price lookup
                 });
             }
+
+            if (seatDeliveryAdded) {
+                checkoutContainer.innerHTML += `<div class="cart-item">Seat Delivery to ${selectedSeat} (+$250)</div>`;
+                total += 250;
+            }
+
             totalContainer.textContent = 'Total: $' + total;
         }
 
-        function handlePurchase() {
-    let cardNumber = document.getElementById('card-number').value;
-    let expiryDate = document.getElementById('expiry-date').value;
-    let cvv = document.getElementById('cvv').value;
-
-    if (!cardNumber || !expiryDate || !cvv) {
-        alert('Please fill in all the card details!');
-        return;
-    }
-
-    // Retrieve current orders or initialize an empty array
-    let orders = JSON.parse(localStorage.getItem('orders')) || [];
-
-    // Get cart and calculate the item quantities and total prices
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let salesData = {};
-
-    // Tally the quantities and calculate the totals
-    cart.forEach(item => {
-        if (!salesData[item]) {
-            salesData[item] = { quantity: 0, total: 0 };
+        function toggleSeatDelivery() {
+            if (!seatDeliveryAdded) {
+                // Prompt user to select a seat
+                selectedSeat = prompt("Enter the seat you want delivery to (e.g., 'Row A, Seat 5'):");
+                if (!selectedSeat) {
+                    alert("Seat selection is required for delivery.");
+                    return;
+                }
+            } else {
+                selectedSeat = ""; // Reset seat selection
+            }
+            seatDeliveryAdded = !seatDeliveryAdded; // Toggle delivery flag
+            loadCheckout();
         }
-        salesData[item].quantity++;
-        salesData[item].total += prices[item] || 0;
-    });
 
-    // Store the sales data in localStorage
-    localStorage.setItem('salesData', JSON.stringify(salesData));
+        function handlePurchase() {
+            let cardNumber = document.getElementById('card-number').value;
+            let expiryDate = document.getElementById('expiry-date').value;
+            let cvv = document.getElementById('cvv').value;
 
-    // Create new order summary
-    let total = document.getElementById('total').textContent;
-    let newOrder = `Items: ${cart.join(', ')}, Total: ${total}`;
-    orders.push(newOrder);
+            if (!cardNumber || !expiryDate || !cvv) {
+                alert('Please fill in all the card details!');
+                return;
+            }
 
-    // Save orders back to localStorage
-    localStorage.setItem('orders', JSON.stringify(orders));
+            let orders = JSON.parse(localStorage.getItem('orders')) || [];
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let salesData = {};
 
-    alert('Purchase successful! Your order has been added to My Orders.');
-    localStorage.removeItem('cart');
-    window.location.href = "Index.html"; // Redirect to homepage
-}
+            cart.forEach(item => {
+                if (!salesData[item]) {
+                    salesData[item] = { quantity: 0, total: 0 };
+                }
+                salesData[item].quantity++;
+                salesData[item].total += prices[item] || 0;
+            });
+
+            localStorage.setItem('salesData', JSON.stringify(salesData));
+
+            let total = document.getElementById('total').textContent;
+            let newOrder = `Items: ${cart.join(', ')}, Total: ${total}`;
+            if (seatDeliveryAdded) {
+                newOrder += `, Seat Delivery to ${selectedSeat}`;
+            }
+
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            alert('Purchase successful! Your order has been added to My Orders.');
+            localStorage.removeItem('cart');
+            window.location.href = "Index.html"; // Redirect to homepage
+        }
     </script>
 </head>
 <body onload="loadCheckout()">
@@ -133,6 +154,11 @@
     </header>
     <h1>Checkout</h1>
     <div class="checkout-container" id="checkout-items"></div>
+
+    <div class="seat-delivery">
+        <button onclick="toggleSeatDelivery()">Toggle Seat Delivery (+$250)</button>
+    </div>
+
     <div class="total" id="total"></div>
     <h2>Enter Card Details</h2>
     <input type="text" id="card-number" placeholder="Card Number" maxlength="16"><br>

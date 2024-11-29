@@ -78,11 +78,13 @@
         }
     </style>
     <script>
+        // In-memory user storage (for the session)
+        let users = [];
+
         function handleUsernameInput() {
             const username = document.getElementById('username').value;
             const passwordContainer = document.getElementById('password-container');
-
-            // Always show password field (now required for both regular users and admins)
+            // Always show password field
             passwordContainer.style.display = "block";
         }
 
@@ -108,6 +110,30 @@
                 alert("Please enter a valid username and password.");
             }
         }
+
+        function registerUser() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert("Please enter a valid username and password.");
+                return;
+            }
+
+            // Check if username already exists
+            const userExists = users.some(u => u.username === username);
+
+            if (userExists) {
+                alert("Username already exists. Please choose another one.");
+            } else {
+                // Register new user
+                users.push({ username: username, password: password });
+                alert("User registered successfully! You can now log in.");
+                // Optionally, redirect to login form or clear inputs for another registration
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            }
+        }
     </script>
 </head>
 <body>
@@ -127,6 +153,10 @@
             <input type="password" id="password" placeholder="Enter your password">
         </div>
         <button onclick="validateLogin()">Login</button>
+
+        <!-- Register Button -->
+        <br>
+        <button onclick="registerUser()">Register New User</button>
     </div>
 </body>
 </html>

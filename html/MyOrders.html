@@ -54,30 +54,30 @@
             let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
             if (orders.length === 0) {
-                document.getElementById('order-container').textContent = "No orders found!";
-            } else {
-                // Generate a QR code for each order
-                orders.forEach((order, index) => {
-                    let qrContainer = document.createElement('div');
-                    qrContainer.className = 'qr-container';
+    document.getElementById('order-container').textContent = "No orders found!";
+} else {
+    orders.forEach((order, index) => {
+    let qrContainer = document.createElement('div');
+    qrContainer.className = 'qr-container';
 
-                    // Add a canvas for the QR code
-                    let canvas = document.createElement('canvas');
-                    canvas.id = 'qrcode-' + index;
+    // Add a canvas for the QR code
+    let canvas = document.createElement('canvas');
+    canvas.id = 'qrcode-' + index;
 
-                    // Add the order details
-                    let orderDetails = document.createElement('p');
-                    orderDetails.textContent = `Order #${index + 1}: ${order}`;
+    // Add the order details
+    let orderDetails = document.createElement('p');
+    orderDetails.textContent = `Order #${index + 1}: ${order}`;
 
-                    // Append elements to the container
-                    qrContainer.appendChild(orderDetails);
-                    qrContainer.appendChild(canvas);
-                    document.getElementById('order-container').appendChild(qrContainer);
+    // Append elements to the container
+    qrContainer.appendChild(orderDetails);
+    qrContainer.appendChild(canvas);
+    document.getElementById('order-container').appendChild(qrContainer);
 
-                    // Generate the QR code
-                    QRCode.toCanvas(canvas, order, function (error) {
-                        if (error) console.error(error);
-                        console.log('QR Code generated for order:', order);
+    // Generate the QR code with plain text for iPhone
+    let qrCodeText = `Order #${index + 1}:\n${order}`;
+    QRCode.toCanvas(canvas, qrCodeText, function (error) {
+        if (error) console.error(error);
+        console.log('QR Code generated with text:', qrCodeText);
                     });
                 });
             }
